@@ -6,7 +6,6 @@ export default class LoginController {
     try {
       const token = await auth.use("api").attempt(email,password, {expiresIn:"720mins"})
 
-
       return response.status(200).json({
         code :200,
         success:true,

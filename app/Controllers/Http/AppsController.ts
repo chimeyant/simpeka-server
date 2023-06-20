@@ -117,15 +117,24 @@ export default class AppsController {
           route: "/backend/dashboard",
         },
 
-        { title: "Master Data", type: "subheader", route: "/" },
-
-        { title: "Halaman Depan", type: "subheader", route: "/" },
         {
-          title: "Slider",
-          icon: "image",
-          route: "/backend/halaman-depan-slider",
-          type: "item",
+          title: "DATA MASTER",
+          icon: "settings",
+          route: "/",
+          type: "subMenu",
+          submenus:[
+
+            {
+              title: "Kategori",
+              icon: "mdi-widgets",
+              route: "/backend/master-category",
+              type: "item",
+            },
+          ]
         },
+
+
+
 
 
         { title: "Utility", type: "subheader", route: "/" },

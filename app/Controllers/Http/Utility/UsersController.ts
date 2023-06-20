@@ -25,7 +25,7 @@ export default class UsersController {
       const user = new User()
       user.name = name
       user.email = email
-      user.password = "123456789"
+      user.password = "12345678"
       user.authent = authent
       user.status = status
       await user.save()
@@ -48,7 +48,7 @@ export default class UsersController {
 
   public async show({params}: HttpContextContract) {
     const {id}= params
-    const user = await User.query().select('id','name','email','authent','status', 'phone','recieve_message').where('id',id).first()
+    const user = await User.query().select('id','name','email','authent','status').where('id',id).first()
 
     return user;
   }
