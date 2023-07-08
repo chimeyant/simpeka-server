@@ -28,16 +28,12 @@ Route.get('/', async () => {
 Route.get("home","HalamanDepan/HomeController.index")
 
 
-
-
-
 Route.group(()=>{
   Route.group(()=>{
     Route.post("token","Auth/LoginController.login")
   }).prefix("auth")
 
   Route.get("info","AppsController.index")
-
   Route.get("menus","AppsController.menus").middleware('auth')
   Route.get("user-info","Utility/UsersController.userInfo").middleware(['auth'])
 
@@ -49,6 +45,16 @@ Route.group(()=>{
   Route.get("data-chart-by-topic","DashboardController.datachartbytopic")
   Route.get('data-chart-by-jenis',"DashboardController.datachartbyjenis")
 
+  /**
+   * Route Dashboard
+   */
+  Route.group(()=>{
+    Route.get("recap-per-tahun","DashboardController.recapPerTahun")
+    Route.get("tarif-rs-per-tahun","DashboardController.tarifRsPerTahun")
+    Route.get("recap-monthly","DashboardController.recapMonthly")
+    Route.get("per-jenis-pengobatan","DashboardController.perJenisPengobatan")
+  }).prefix("dashboard").middleware(['auth'])
+
   //route superadmin
   Route.group(()=>{
     Route.group(()=>{
@@ -59,20 +65,29 @@ Route.group(()=>{
   //route masterdata
   Route.group(()=>{
     Route.resource("category","MasterData/CategoriesController")
+    Route.resource("doctor","MasterData/DoctorsController")
+    Route.resource('kelas-bpjs',"MasterData/BpjsKelasController")
+    Route.resource("problem","MasterData/ProblemsController")
+    Route.resource("diaglist","MasterData/DiaglistsController")
+    Route.resource("proclist","MasterData/ProclistsController")
   }).prefix('master-data').middleware(['auth'])
 
-  //Route Combo'
+  //Route Combo
   Route.group(()=>{
-
-
+    Route.get("category", "MasterData/CategoriesController.combo")
+    Route.get("kelas-bpjs","MasterData/BpjsKelasController.combo")
+    Route.get('dokter',"MasterData/DoctorsController.combo")
   }).prefix('combo').middleware(['auth'])
 
   /**
    * Route Group Manajemen
    */
   Route.group(()=>{
-
-  }).prefix("manajement").middleware(['auth'])
+    Route.resource("klaim","Manajemen/TransactionsController")
+    Route.post("klaim-import","Manajemen/TransactionsController.import")
+    Route.post("klaim-update-category","Manajemen/TransactionsController.updatecategory")
+    Route.post("klaim-update-status","Manajemen/TransactionsController.updatestatus")
+  }).prefix("manajemen").middleware(['auth'])
 
 
 

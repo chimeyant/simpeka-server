@@ -117,4 +117,19 @@ export default class CategoriesController {
       })
     }
   }
+
+  public async combo(){
+    const model = await Category.query().orderBy("code",'asc')
+
+    const datas:{}[]=[]
+
+    model.forEach(element => {
+      const row = {}
+      row['value']= element.uuid,
+      row['text'] = element.name
+      datas.push(row)
+    });
+
+    return datas;
+  }
 }
