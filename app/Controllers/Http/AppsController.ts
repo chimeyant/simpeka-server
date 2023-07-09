@@ -160,8 +160,56 @@ export default class AppsController {
               route: "/backend/master-category",
               type: "item",
             },
+            {
+              title: "Kategori",
+              icon: "mdi-widgets",
+              route: "/backend/master-category",
+              type: "item",
+            },
+            {
+              title: "Dokter",
+              icon: "mdi-doctor",
+              route: "/backend/master-dokter",
+              type: "item",
+            },
+            {
+              title: "Kelas BPJS",
+              icon: "mdi-home-floor-1",
+              route: "/backend/master-kelas-bpjs",
+              type: "item",
+            },
+            {
+              title: "Master Pencarian Alasan",
+              icon: "mdi-book-open-variant",
+              route: "/backend/master-problem",
+              type: "item",
+            },
+            {
+              title: "Master Diagnosis",
+              icon: "mdi-palette-swatch",
+              route: "/backend/master-diagnosis",
+              type: "item",
+            },
+            {
+              title: "Master Tindakan",
+              icon: "mdi-clipboard-list-outline",
+              route: "/backend/master-proclist",
+              type: "item",
+            },
           ]
         },
+
+        { title: "MANAJEMEN", type: "subMenu", route: "/", submenus:[
+          {
+            title: "Data Klaim",
+            icon: "mdi-bullhorn-outline",
+            route: "/backend/manajemen-klaim",
+            type: "item",
+          },
+
+        ] },
+
+
 
         { title: "Utility", type: "subheader", route: "/" },
 
