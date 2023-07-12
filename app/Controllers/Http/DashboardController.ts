@@ -93,20 +93,23 @@ export default class DashboardController {
 
   }
 
-  async recapMonthly({}:HttpContextContract){
-    const result = await DashboardService.recap_monthly()
+  async recapMonthly({params}:HttpContextContract){
+    const year = params.year
+    const result = await DashboardService.recap_monthly(year)
 
     return result
   }
 
-  async perJenisPengobatan({}:HttpContextContract){
-    const result = await DashboardService.per_jenis_pengobatan()
+  async perJenisPengobatan({params}:HttpContextContract){
+    const year = params.year
+    const result = await DashboardService.per_jenis_pengobatan(year)
 
     return result
   }
 
-  async recapPerTahun({}:HttpContextContract){
-    const result = await DashboardService.recap_per_tahun()
+  async recapPendingClaimMonthly({params}:HttpContextContract){
+    const bulantahun = params.bulan
+    const result = await DashboardService.recap_pending_claim_monthly(bulantahun)
 
     return result;
   }
@@ -116,5 +119,18 @@ export default class DashboardController {
 
     return result;
   }
+
+  async tarifRsMonthly({params}:HttpContextContract){
+    const result = await DashboardService.total_tarif_rs_monthly(params.bulan)
+
+    return result;
+  }
+
+  async tarifTotalMonthly({params}:HttpContextContract){
+    const result = await DashboardService.total_tarif_rs_monthly(params.bulan)
+
+    return result;
+  }
+
 
 }

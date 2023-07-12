@@ -1,10 +1,8 @@
 import Transaction from "App/Models/Transaction";
-import { DateTime } from "luxon";
+import I18n from "@ioc:Adonis/Addons/I18n";
 
 class DashboardService {
-  public async recap_monthly(){
-    const currdate = new Date;
-    const year = 2022//DateTime.fromJSDate(currdate).toFormat('yyyy')
+  public async recap_monthly(year:number){
 
     const datas:[]=[];
 
@@ -72,13 +70,10 @@ class DashboardService {
     return datas;
   }
 
-  public async per_jenis_pengobatan(){
-    const currdate = new Date;
-    const year = 2022+"%"//DateTime.fromJSDate(currdate).toFormat('yyyy')
-
-
-    const jmlrawatjalan = await Transaction.query().where("rawat_jalan",true).whereRaw("discharge_date::text like ?",[year] ).getCount()
-    const jmlrawatinap = await Transaction.query().where("rawat_jalan",false).whereRaw("discharge_date::text like ?",[year] ).getCount()
+  public async per_jenis_pengobatan(year:string){
+    const tahun = year + "%"
+    const jmlrawatjalan = await Transaction.query().where("rawat_jalan",true).whereRaw("discharge_date::text like ?",[tahun] ).getCount()
+    const jmlrawatinap = await Transaction.query().where("rawat_jalan",false).whereRaw("discharge_date::text like ?",[tahun] ).getCount()
 
     const datas:[]=[]
 
@@ -89,11 +84,9 @@ class DashboardService {
 
   }
 
-  public async recap_per_tahun(){
-    const currdate = new Date
-    const year = 2022+"%"
-
-    const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[year]).getCount()
+  public async recap_pending_claim_monthly(bulan:string){
+    const bulantahun = bulan + "%"
+    const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[bulantahun]).getCount()
 
     return jmlpertahun;
   }
@@ -105,6 +98,27 @@ class DashboardService {
     const jmlpertahun = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[year])
 
     return jmlpertahun[0].sum;
+  }
+
+  public async total_tarif_rs_monthly(bulan){
+    const bulantahun  = bulan + "%"
+
+    const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun])
+
+    const jumlah =await I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+    return jumlah;
+  }
+
+  public async total_tarif_total_monthly(bulan){
+    const bulantahun  = bulan + "%"
+
+    const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun])
+
+    const jumlah =await I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+    return jumlah;
+  }
+
+
   }
 }
 

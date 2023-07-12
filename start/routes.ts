@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import DashboardController from 'App/Controllers/Http/DashboardController'
 
 Route.get('/', async () => {
   return "API SERVICE V2 SIMPEKA"
@@ -49,10 +50,12 @@ Route.group(()=>{
    * Route Dashboard
    */
   Route.group(()=>{
-    Route.get("recap-per-tahun","DashboardController.recapPerTahun")
+    Route.get("rekap-pending-klaim-per-bulan/:bulan","DashboardController.recapPendingClaimMonthly")
     Route.get("tarif-rs-per-tahun","DashboardController.tarifRsPerTahun")
-    Route.get("recap-monthly","DashboardController.recapMonthly")
-    Route.get("per-jenis-pengobatan","DashboardController.perJenisPengobatan")
+    Route.get("tarif-rs-monthly/:bulan","DashboardController.tarifRsMonthly")
+    Route.get("tarif-total-monthly/:bulan","DashboardController.tarifTotalMonthly")
+    Route.get("recap-monthly/:year","DashboardController.recapMonthly")
+    Route.get("per-jenis-pengobatan/:year","DashboardController.perJenisPengobatan")
   }).prefix("dashboard").middleware(['auth'])
 
   //route superadmin
