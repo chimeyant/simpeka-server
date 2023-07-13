@@ -1,5 +1,6 @@
 import Transaction from "App/Models/Transaction";
 import I18n from "@ioc:Adonis/Addons/I18n";
+import Doctor from "App/Models/Doctor";
 
 class DashboardService {
   public async recap_monthly(year:number){
@@ -118,7 +119,27 @@ class DashboardService {
     return jumlah;
   }
 
+  public async recap_pending_claim_by_doctor(bulan){
+    const bulantahun = bulan + "%"
+    const model = await Doctor.query().preload('transactions',(trxQuery)=>{
+      trxQuery.whereRaw('discharge_date::text like ?',[bulantahun])
+    }).orderBy("name",'asc')
 
+    const datas:{}[]= []
+
+    let i =0
+    model.forEach(async element => {
+      const row ={}
+      if(Number(element.transactions.length) > 0){
+        row['nomor']= i +=1
+        row['code']= element.code
+        row['name']= element.name
+        row['jml']= element.transactions.length
+        datas.push(row)
+      }
+    });
+
+    return datas;
   }
 }
 

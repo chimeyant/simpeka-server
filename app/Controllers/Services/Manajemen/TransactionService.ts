@@ -86,8 +86,6 @@ class TransactionService {
 
 
 
-
-
         const row ={}
         row['bpjs_kelas_uuid']=kelas?.uuid
         row['bpjs_kelas']= element.KELAS_RAWAT

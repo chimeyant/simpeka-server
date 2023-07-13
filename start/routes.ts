@@ -56,6 +56,7 @@ Route.group(()=>{
     Route.get("tarif-total-monthly/:bulan","DashboardController.tarifTotalMonthly")
     Route.get("recap-monthly/:year","DashboardController.recapMonthly")
     Route.get("per-jenis-pengobatan/:year","DashboardController.perJenisPengobatan")
+    Route.get("recap-claims-monthly-by-doctor/:bulan","DashboardController.recapClaimsByDoctor")
   }).prefix("dashboard").middleware(['auth'])
 
   //route superadmin

@@ -132,5 +132,11 @@ export default class DashboardController {
     return result;
   }
 
+  async recapClaimsByDoctor({params}:HttpContextContract){
+    const result = await DashboardService.recap_pending_claim_by_doctor(params.bulan)
+
+    return result
+  }
+
 
 }
