@@ -1,6 +1,10 @@
 import Transaction from "App/Models/Transaction";
 import I18n from "@ioc:Adonis/Addons/I18n";
 import Doctor from "App/Models/Doctor";
+import Diaglist from "App/Models/Diaglist";
+import TransactionDiaglist from "App/Models/TransactionDiaglist";
+import TransactionProclist from "App/Models/TransactionProclist";
+import Category from "App/Models/Category";
 
 class DashboardService {
   public async recap_monthly(year:number){
@@ -140,6 +144,64 @@ class DashboardService {
     });
 
     return datas;
+  }
+
+  public async recap_pending_claim_by_kategori(bulan:string){
+    const bulantahun = bulan + "%"
+    const model = await Category.query().preload("transactions",(trxQuery)=>{
+      trxQuery.whereRaw("discharge_date::text like ? ",[bulantahun])
+    }).orderBy('code','asc')
+
+    const labels:{}[]=[]
+    const datas:{}[]=[]
+
+    model.forEach(element => {
+      labels.push(element.name)
+      datas.push(Number(element.transactions.length))
+    });
+
+    return{
+      labels:labels,
+      data:datas
+    }
+  }
+
+  public async recap_pending_claim_by_diagnostic(bulan:string){
+    const bulantahun = bulan + "%"
+    const model = await TransactionDiaglist.query().knexQuery.select('code').count('code').whereRaw('discharge_date::text like ?',[bulantahun]).orderBy('count','desc').groupBy('code').limit(10)
+
+
+    const labels:{}[]=[]
+    const datas:{}[]=[]
+
+    model.forEach(element => {
+      labels.push(element.code)
+      datas.push(Number(element.count))
+
+    });
+
+    return {
+      labels:labels,
+      data:datas,
+    };
+  }
+
+  public async recap_pending_by_tindakan(bulan:string){
+    const bulantahun = bulan + "%"
+    const model = await TransactionProclist.query().knexQuery.select('code').count('code').whereRaw('discharge_date::text like ?',[bulantahun]).orderBy('count','desc').groupBy('code').limit(10)
+
+    const labels:{}[]=[]
+    const datas:{}[]=[]
+
+    model.forEach(element => {
+      labels.push(element.code)
+      datas.push(Number(element.count))
+    });
+
+    return {
+      labels:labels,
+      data:datas,
+    };
   }
 }
 

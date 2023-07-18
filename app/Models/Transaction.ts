@@ -2,8 +2,10 @@ import { DateTime } from 'luxon'
 import {v4 as uuid} from "uuid"
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import {compose} from "@ioc:Adonis/Core/Helpers"
-import { BaseModel, BelongsTo, beforeCreate, belongsTo, column, computed, scope } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasMany, beforeCreate, belongsTo, column, computed, hasMany, scope } from '@ioc:Adonis/Lucid/Orm'
 import Doctor from './Doctor'
+import TransactionDiaglist from './TransactionDiaglist'
+import TransactionProclist from './TransactionProclist'
 
 export default class Transaction extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -111,6 +113,12 @@ export default class Transaction extends compose(BaseModel, SoftDeletes) {
 
   @belongsTo(()=>Doctor,{foreignKey:"doctorUuid", localKey:"uuid"})
   public doctor:BelongsTo<typeof Doctor>
+
+  @hasMany(()=> TransactionDiaglist,{localKey: "uuid", foreignKey:"transactionUuid"})
+  public diaglists: HasMany<typeof TransactionDiaglist>
+
+  @hasMany(()=> TransactionProclist, {localKey:"uuid",foreignKey:"transactionUuid"})
+  public proclists:HasMany<typeof TransactionProclist>
 
 
   public static filterOn= scope((query, request)=>{

@@ -2,7 +2,8 @@ import { DateTime } from 'luxon'
 import {v4 as uuid } from "uuid"
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import {compose} from "@ioc:Adonis/Core/Helpers"
-import { BaseModel, beforeCreate, column, computed, scope } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, beforeCreate, column, computed, hasMany, scope } from '@ioc:Adonis/Lucid/Orm'
+import TransactionDiaglist from './TransactionDiaglist'
 
 export default class Diaglist extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -33,6 +34,9 @@ export default class Diaglist extends compose(BaseModel, SoftDeletes) {
   public static async createUUID(diaglist:Diaglist){
     diaglist.uuid = uuid()
   }
+
+  @hasMany(()=> TransactionDiaglist,{localKey:"code", foreignKey:"code"})
+  public transactiondiaglist:HasMany<typeof TransactionDiaglist>
 
   @computed()
   public get datadisplay(){

@@ -2,7 +2,8 @@ import { DateTime } from 'luxon'
 import {v4 as uuid} from "uuid"
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import {compose} from "@ioc:Adonis/Core/Helpers"
-import { BaseModel, beforeCreate, column, computed, scope } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, beforeCreate, column, computed, hasMany, scope } from '@ioc:Adonis/Lucid/Orm'
+import TransactionProclist from './TransactionProclist'
 
 export default class Proclist extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -31,6 +32,9 @@ export default class Proclist extends compose(BaseModel, SoftDeletes) {
   public static async createUUID(proclist:Proclist){
     proclist.uuid  = uuid()
   }
+
+  @hasMany(()=> TransactionProclist,{localKey:"code",foreignKey:"code"})
+  public transactionproclist:HasMany<typeof TransactionProclist>
 
   @computed()
   public get datadisplay(){

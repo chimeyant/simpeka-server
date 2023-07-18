@@ -46,6 +46,8 @@ Route.group(()=>{
   Route.get("data-chart-by-topic","DashboardController.datachartbytopic")
   Route.get('data-chart-by-jenis',"DashboardController.datachartbyjenis")
 
+
+
   /**
    * Route Dashboard
    */
@@ -57,6 +59,9 @@ Route.group(()=>{
     Route.get("recap-monthly/:year","DashboardController.recapMonthly")
     Route.get("per-jenis-pengobatan/:year","DashboardController.perJenisPengobatan")
     Route.get("recap-claims-monthly-by-doctor/:bulan","DashboardController.recapClaimsByDoctor")
+    Route.get('data-chart-by-diagnostic/:bulan',"DashboardController.recapClaimByDiagnostic")
+    Route.get('data-chart-by-tindakan/:bulan',"DashboardController.recapClaimByTindakan")
+    Route.get('data-chart-by-kategori/:bulan',"DashboardController.recapClaimByKategori")
   }).prefix("dashboard").middleware(['auth'])
 
   //route superadmin

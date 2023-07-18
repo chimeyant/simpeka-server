@@ -2,7 +2,8 @@ import { DateTime } from 'luxon'
 import {compose}from "@ioc:Adonis/Core/Helpers"
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import {v4 as uuid} from "uuid"
-import { BaseModel, beforeCreate, column, computed } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, beforeCreate, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import Transaction from './Transaction'
 
 export default class Category extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -36,6 +37,9 @@ export default class Category extends compose(BaseModel, SoftDeletes) {
   public static async createUUID(category:Category){
     category.uuid = uuid()
   }
+
+  @hasMany(()=> Transaction,{localKey:"uuid", foreignKey:"categoryUuid"})
+  public transactions:HasMany<typeof Transaction>
 
   @computed()
   public get dataview(){

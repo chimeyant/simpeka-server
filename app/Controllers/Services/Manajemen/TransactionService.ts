@@ -6,6 +6,8 @@ import { MSG_CATEGORY_UPDATE_SUCCESS, MSG_FAILED_PROCESS, MSG_IMPORT_SUCCESS, MS
 import { DateTime } from "luxon";
 import Doctor from "App/Models/Doctor";
 import BpjsKela from "App/Models/BpjsKela";
+import TransactionDiaglist from "App/Models/TransactionDiaglist";
+import TransactionProclist from "App/Models/TransactionProclist";
 
 
 
@@ -76,35 +78,63 @@ class TransactionService {
         let dpjp =  element.DPJP
 
         let doctor = await Doctor.query().knexQuery.whereLike("name" ,"%"+ dpjp +"%").first()
-        console.log(doctor)
         let kelas = await BpjsKela.findBy("code",element.KELAS_RAWAT)
+
         let tempdiagnosis = element.DIAGLIST;
         let diaglists = tempdiagnosis.split(";")
         let tempproclist = element.PROCLIST  == undefined ?null: element.PROCLIST
         tempproclist = tempproclist ? tempproclist.replace("-",""):null
         let proclists = tempproclist ? tempproclist.split(";"):null
 
+        let discharge_date = new Date(element.DISCHARGE_DATE)
+
+        //direct save
+        const transaction = new Transaction
+        transaction.bpjsKelasUuid = kelas?.uuid
+        transaction.bpjsKelas= element.KELAS_RAWAT
+        transaction.dischargeDate =discharge_date
+        transaction.diaglist = JSON.stringify(diaglists)
+        transaction.proclist = JSON.stringify(proclists)
+        transaction.totalTarif= isNaN(element.TOTAL_TARIF)? 0 : Number(element.TOTAL_TARIF)
+        transaction.tarifRs = isNaN(element.TARIF_RS)? 0: Number(element.TARIF_RS)
+        transaction.namaPasien = element.NAMA_PASIEN
+        transaction.umur = Number(element.UMUR_TAHUN)
+        transaction.dpjp = element.DPJP
+        transaction.doctorUuid = doctor? doctor.uuid :null
+        transaction.sep = element.SEP
+        transaction.description = element.KETPENDING
+        transaction.rawatJalan = jenisPengobatan
+
+        await transaction.save()
+
+        //fetch diaglist
+        if(diaglists){
+          let datas_diaglist:{}[]=[]
+          diaglists.forEach(item => {
+              const row={}
+              row['transaction_uuid'] = transaction.uuid
+              row['code']= item
+              row['discharge_date']= discharge_date
+              datas_diaglist.push(row)
+          });
+
+          await TransactionDiaglist.createMany(datas_diaglist)
+        }
 
 
-        const row ={}
-        row['bpjs_kelas_uuid']=kelas?.uuid
-        row['bpjs_kelas']= element.KELAS_RAWAT
-        row['discharge_date']= new Date(element.DISCHARGE_DATE)
-        row['diaglist']= JSON.stringify(diaglists)
-        row['proclist']= JSON.stringify(proclists)
+        if(proclists){
+          let datas_proclists:{}[]=[]
+          proclists.forEach(item => {
+            const row ={}
+            row['transaction_uuid'] = transaction.uuid
+            row['code']= item
+            row['discharge_date']= discharge_date
+            datas_proclists.push(row)
+          });
 
-        row['total_tarif']= isNaN(element.TOTAL_TARIF)? 0 : Number(element.TOTAL_TARIF)
-        row['tarif_rs']= isNaN(element.TARIF_RS)? 0: Number(element.TARIF_RS)
-        row['nama_pasien']= element.NAMA_PASIEN
-        row['umur'] =Number(element.UMUR_TAHUN)
-        row['dpjp']= element.DPJP
-        row['doctor_uuid']= doctor? doctor.uuid :null
-        row['sep']= element.SEP
-        row['description']= element.KETPENDING
-        row['rawat_jalan']= jenisPengobatan
+          await TransactionProclist.createMany(datas_proclists)
 
-        //save data
-        await Transaction.create(row)
+        }
       })
 
 

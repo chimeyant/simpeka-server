@@ -138,5 +138,24 @@ export default class DashboardController {
     return result
   }
 
+  async recapClaimByDiagnostic({params}:HttpContextContract){
+    const result = await DashboardService.recap_pending_claim_by_diagnostic(params.bulan)
+
+    return result;
+  }
+
+  async recapClaimByTindakan({params}:HttpContextContract){
+    const result = await DashboardService.recap_pending_by_tindakan(params.bulan)
+
+    return result;
+  }
+
+  async recapClaimByKategori({params}:HttpContextContract){
+    const result = await DashboardService.recap_pending_claim_by_kategori(params.bulan)
+
+    return result;
+  }
+
+
 
 }
