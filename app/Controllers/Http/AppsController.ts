@@ -161,12 +161,6 @@ export default class AppsController {
               type: "item",
             },
             {
-              title: "Kategori",
-              icon: "mdi-widgets",
-              route: "/backend/master-category",
-              type: "item",
-            },
-            {
               title: "Dokter",
               icon: "mdi-doctor",
               route: "/backend/master-dokter",
