@@ -203,6 +203,28 @@ export default class AppsController {
 
         ] },
 
+        { title: "LAPORAN", type: "subMenu", route: "/", submenus:[
+          {
+            title: "Pending Klaim",
+            icon: "mdi-book",
+            route: "#",
+            type: "item",
+          },
+          {
+            title: "Per Dokter",
+            icon: "mdi-book",
+            route: "#",
+            type: "item",
+          },
+          {
+            title: "Per Kategori",
+            icon: "mdi-book",
+            route: "#",
+            type: "item",
+          },
+
+        ] },
+
 
 
         { title: "Utility", type: "subheader", route: "/" },
