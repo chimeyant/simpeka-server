@@ -89,11 +89,23 @@ class DashboardService {
 
   }
 
-  public async recap_pending_claim_monthly(bulan:string){
+  public async recap_pending_claim_monthly(bulan:string,layanan:string){
     const bulantahun = bulan + "%"
-    const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[bulantahun]).getCount()
 
-    return jmlpertahun;
+    if(layanan=='rawat-inap'){
+      const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',false).getCount()
+
+      return jmlpertahun;
+    }else if(layanan=='rawat-jalan'){
+      const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',true).getCount()
+
+      return jmlpertahun;
+    }else{
+
+      const jmlpertahun = await Transaction.query().whereRaw('discharge_date::text like ?',[bulantahun]).getCount()
+
+      return jmlpertahun;
+    }
   }
 
   public async total_tarif_rs_per_tahun(){
@@ -105,64 +117,175 @@ class DashboardService {
     return jmlpertahun[0].sum;
   }
 
-  public async total_tarif_rs_monthly(bulan){
+  public async total_tarif_rs_monthly(bulan:string, layanan:string){
     const bulantahun  = bulan + "%"
 
-    const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun])
+    if(layanan == 'rawat-inap'){
+      //bagian rawat inap
+      const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',false)
 
-    const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
-    return jumlah;
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+
+    }else if(layanan=='rawat-jalan'){
+      //bagian rawat jalan
+      const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',false).where('rawat_jalan',true)
+
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+
+    }else{
+      const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun])
+
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+    }
   }
 
-  public async total_tarif_total_monthly(bulan){
+  public async total_tarif_total_monthly(bulan:string, layanan:string){
     const bulantahun  = bulan + "%"
 
-    const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun])
+    if(layanan=='rawat-inap'){
+      const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',false)
 
-    const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
-    return jumlah;
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+    }else if(layanan=='rawat-jalan'){
+      const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',true)
+
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+    }else{
+      const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun])
+
+      const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+      return jumlah;
+    }
+
   }
 
-  public async recap_pending_claim_by_doctor(bulan){
+  public async recap_pending_claim_by_doctor(bulan:string, layanan:string){
     const bulantahun = bulan + "%"
-    const model = await Doctor.query().preload('transactions',(trxQuery)=>{
-      trxQuery.whereRaw('discharge_date::text like ?',[bulantahun])
-    }).orderBy("name",'asc')
+    if(layanan=='rawat-inpa'){
+      const model = await Doctor.query().preload('transactions',(trxQuery)=>{
+        trxQuery.whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',false)
+      }).orderBy("name",'asc')
 
-    const datas:{}[]= []
+      const datas:{}[]= []
 
-    let i =0
-    model.forEach(async element => {
-      const row ={}
-      if(Number(element.transactions.length) > 0){
-        row['nomor']= i +=1
-        row['code']= element.code
-        row['name']= element.name
-        row['jml']= element.transactions.length
-        datas.push(row)
+      let i =0
+      model.forEach(async element => {
+        const row ={}
+        if(Number(element.transactions.length) > 0){
+          row['nomor']= i +=1
+          row['code']= element.code
+          row['name']= element.name
+          row['jml']= element.transactions.length
+          datas.push(row)
+        }
+      });
+
+      return datas;
+
+    }else if(layanan=='rawat-jalan'){
+      const model = await Doctor.query().preload('transactions',(trxQuery)=>{
+        trxQuery.whereRaw('discharge_date::text like ?',[bulantahun]).where('rawat_jalan',true)
+      }).orderBy("name",'asc')
+
+      const datas:{}[]= []
+
+      let i =0
+      model.forEach(async element => {
+        const row ={}
+        if(Number(element.transactions.length) > 0){
+          row['nomor']= i +=1
+          row['code']= element.code
+          row['name']= element.name
+          row['jml']= element.transactions.length
+          datas.push(row)
+        }
+      });
+
+      return datas;
+
+    }else{
+      const model = await Doctor.query().preload('transactions',(trxQuery)=>{
+        trxQuery.whereRaw('discharge_date::text like ?',[bulantahun])
+      }).orderBy("name",'asc')
+
+      const datas:{}[]= []
+
+      let i =0
+      model.forEach(async element => {
+        const row ={}
+        if(Number(element.transactions.length) > 0){
+          row['nomor']= i +=1
+          row['code']= element.code
+          row['name']= element.name
+          row['jml']= element.transactions.length
+          datas.push(row)
+        }
+      });
+
+      return datas;
+
+    }
+
+  }
+
+  public async recap_pending_claim_by_kategori(bulan:string, layanan:string){
+    const bulantahun = bulan + "%"
+    if(layanan=='rawat-inap'){
+      const model = await Category.query().preload("transactions",(trxQuery)=>{
+        trxQuery.whereRaw("discharge_date::text like ? ",[bulantahun]).where('rawat_jalan',false)
+      }).orderBy('code','asc')
+
+      const labels:{}[]=[]
+      const datas:{}[]=[]
+
+      model.forEach(element => {
+        labels.push(element.name)
+        datas.push(Number(element.transactions.length))
+      });
+
+      return{
+        labels:labels,
+        data:datas
       }
-    });
+    }else if(layanan=='rawat-jalan'){
+      const model = await Category.query().preload("transactions",(trxQuery)=>{
+        trxQuery.whereRaw("discharge_date::text like ? ",[bulantahun]).where('rawat_jalan',true)
+      }).orderBy('code','asc')
 
-    return datas;
-  }
+      const labels:{}[]=[]
+      const datas:{}[]=[]
 
-  public async recap_pending_claim_by_kategori(bulan:string){
-    const bulantahun = bulan + "%"
-    const model = await Category.query().preload("transactions",(trxQuery)=>{
-      trxQuery.whereRaw("discharge_date::text like ? ",[bulantahun])
-    }).orderBy('code','asc')
+      model.forEach(element => {
+        labels.push(element.name)
+        datas.push(Number(element.transactions.length))
+      });
 
-    const labels:{}[]=[]
-    const datas:{}[]=[]
+      return{
+        labels:labels,
+        data:datas
+      }
+    }else{
+      const model = await Category.query().preload("transactions",(trxQuery)=>{
+        trxQuery.whereRaw("discharge_date::text like ? ",[bulantahun])
+      }).orderBy('code','asc')
 
-    model.forEach(element => {
-      labels.push(element.name)
-      datas.push(Number(element.transactions.length))
-    });
+      const labels:{}[]=[]
+      const datas:{}[]=[]
 
-    return{
-      labels:labels,
-      data:datas
+      model.forEach(element => {
+        labels.push(element.name)
+        datas.push(Number(element.transactions.length))
+      });
+
+      return{
+        labels:labels,
+        data:datas
+      }
     }
   }
 

@@ -52,16 +52,16 @@ Route.group(()=>{
    * Route Dashboard
    */
   Route.group(()=>{
-    Route.get("rekap-pending-klaim-per-bulan/:bulan","DashboardController.recapPendingClaimMonthly")
+    Route.get("rekap-pending-klaim-per-bulan/:bulan/:layanan","DashboardController.recapPendingClaimMonthly")
     Route.get("tarif-rs-per-tahun","DashboardController.tarifRsPerTahun")
-    Route.get("tarif-rs-monthly/:bulan","DashboardController.tarifRsMonthly")
-    Route.get("tarif-total-monthly/:bulan","DashboardController.tarifTotalMonthly")
+    Route.get("tarif-rs-monthly/:bulan/:layanan","DashboardController.tarifRsMonthly")
+    Route.get("tarif-total-monthly/:bulan/:layanan","DashboardController.tarifTotalMonthly")
     Route.get("recap-monthly/:year","DashboardController.recapMonthly")
     Route.get("per-jenis-pengobatan/:year","DashboardController.perJenisPengobatan")
-    Route.get("recap-claims-monthly-by-doctor/:bulan","DashboardController.recapClaimsByDoctor")
+    Route.get("recap-claims-monthly-by-doctor/:bulan/:layanan","DashboardController.recapClaimsByDoctor")
     Route.get('data-chart-by-diagnostic/:bulan',"DashboardController.recapClaimByDiagnostic")
     Route.get('data-chart-by-tindakan/:bulan',"DashboardController.recapClaimByTindakan")
-    Route.get('data-chart-by-kategori/:bulan',"DashboardController.recapClaimByKategori")
+    Route.get('data-chart-by-kategori/:bulan/:layanan',"DashboardController.recapClaimByKategori")
   }).prefix("dashboard").middleware(['auth'])
 
   //route superadmin

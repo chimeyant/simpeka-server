@@ -107,7 +107,7 @@ export default class DashboardController {
 
   async recapPendingClaimMonthly({params}:HttpContextContract){
     const bulantahun = params.bulan
-    const result = await DashboardService.recap_pending_claim_monthly(bulantahun)
+    const result = await DashboardService.recap_pending_claim_monthly(bulantahun,params.layanan)
 
     return result;
   }
@@ -119,19 +119,19 @@ export default class DashboardController {
   }
 
   async tarifRsMonthly({params}:HttpContextContract){
-    const result = await DashboardService.total_tarif_rs_monthly(params.bulan)
+    const result = await DashboardService.total_tarif_rs_monthly(params.bulan, params.layanan)
 
     return result;
   }
 
   async tarifTotalMonthly({params}:HttpContextContract){
-    const result = await DashboardService.total_tarif_total_monthly(params.bulan)
+    const result = await DashboardService.total_tarif_total_monthly(params.bulan, params.layanan)
 
     return result;
   }
 
   async recapClaimsByDoctor({params}:HttpContextContract){
-    const result = await DashboardService.recap_pending_claim_by_doctor(params.bulan)
+    const result = await DashboardService.recap_pending_claim_by_doctor(params.bulan, params.layanan)
 
     return result
   }
@@ -149,7 +149,7 @@ export default class DashboardController {
   }
 
   async recapClaimByKategori({params}:HttpContextContract){
-    const result = await DashboardService.recap_pending_claim_by_kategori(params.bulan)
+    const result = await DashboardService.recap_pending_claim_by_kategori(params.bulan,params.layanan)
 
     return result;
   }
