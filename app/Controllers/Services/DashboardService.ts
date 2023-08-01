@@ -110,7 +110,7 @@ class DashboardService {
 
     const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun])
 
-    const jumlah =await I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+    const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
     return jumlah;
   }
 
@@ -119,7 +119,7 @@ class DashboardService {
 
     const jmlperbulan = await Transaction.query().knexQuery.sum("total_tarif").whereRaw('discharge_date::text like ?',[bulantahun])
 
-    const jumlah =await I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
+    const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
     return jumlah;
   }
 

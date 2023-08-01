@@ -1,7 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Catalog from 'App/Models/Catalog'
-
-import GroupDatum from 'App/Models/GroupDatum'
 import Topic from 'App/Models/Topic'
 import DashboardService from '../Services/DashboardService'
 
@@ -127,7 +125,7 @@ export default class DashboardController {
   }
 
   async tarifTotalMonthly({params}:HttpContextContract){
-    const result = await DashboardService.total_tarif_rs_monthly(params.bulan)
+    const result = await DashboardService.total_tarif_total_monthly(params.bulan)
 
     return result;
   }
