@@ -81,7 +81,7 @@ export default class AppsController {
               type: "item",
             },
             {
-              title: "Master Pencarian Alasan",
+              title: "Master Pencarian Penyebab",
               icon: "mdi-book-open-variant",
               route: "/backend/master-problem",
               type: "item",
@@ -195,7 +195,7 @@ export default class AppsController {
               type: "item",
             },
             {
-              title: "Master Pencarian Alasan",
+              title: "Master Pencarian Penyebab",
               icon: "mdi-book-open-variant",
               route: "/backend/master-problem",
               type: "item",
