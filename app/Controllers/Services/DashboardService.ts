@@ -134,6 +134,7 @@ class DashboardService {
       const jumlah = I18n.locale("id").formatCurrency(jmlperbulan[0].sum,{currency:"IDR"} )
       return jumlah;
 
+
     }else{
       const jmlperbulan = await Transaction.query().knexQuery.sum("tarif_rs").whereRaw('discharge_date::text like ?',[bulantahun])
 

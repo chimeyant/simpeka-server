@@ -110,29 +110,6 @@ export default class AppsController {
 
         ] },
 
-        // { title: "LAPORAN", type: "subMenu", route: "/", submenus:[
-        //   {
-        //     title: "Pending Klaim",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-        //   {
-        //     title: "Per Dokter",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-        //   {
-        //     title: "Per Kategori",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-
-        // ] },
-
-
         { title: "UTILITAS", type: "subMenu", route: "/" , submenus:[
           {
             title: "Manajemen Pengguna",
@@ -225,28 +202,6 @@ export default class AppsController {
 
         ] },
 
-        // { title: "LAPORAN", type: "subMenu", route: "/", submenus:[
-        //   {
-        //     title: "Pending Klaim",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-        //   {
-        //     title: "Per Dokter",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-        //   {
-        //     title: "Per Kategori",
-        //     icon: "mdi-book-open-variant",
-        //     route: "#",
-        //     type: "item",
-        //   },
-
-        // ] },
-
 
 
         { title: "Utility", type: "subheader", route: "/" },
@@ -280,7 +235,8 @@ export default class AppsController {
       return menus;
     }
 
-    if(authent == 'operator'){
+
+    if(authent == 'kepala-rumah-sakit'){
       menus = [
         {
           title: "Dashboard",
@@ -288,112 +244,6 @@ export default class AppsController {
           icon: "mdi-view-dashboard",
           route: "/backend/dashboard",
         },
-        {
-          title: "",
-          type: "divider",
-        },
-
-        { title: "MANAJEMEN", type: "subMenu", route: "/", submenus:[
-          {
-            title: "Dataset",
-            icon: "mdi-database",
-            route: "/backend/manajemen-dataset",
-            type: "item",
-          },
-          {
-            title: "Visualisasi",
-            icon: "mdi-image-frame",
-            route: "/backend/manajemen-visualization",
-            type: "item",
-          },
-          {
-            title: "Infografis",
-            icon: "mdi-finance",
-            route: "/backend/manajemen-infographic",
-            type: "item",
-          },
-          {
-            title: "Dokumen",
-            icon: "mdi-book-open-variant",
-            route: "/backend/manajemen-document",
-            type: "item",
-          },
-          {
-            title: "Videografis",
-            icon: "mdi-video-box",
-            route: "/backend/manajemen-videographic",
-            type: "item",
-          },
-          {
-            title: "Permohonan Dataset",
-            icon: "mdi-hand-heart",
-            route: "/backend/manajemen-permohonan",
-            type: "item",
-          },
-        ] },
-
-        { title: "BTS", type: "subMenu", route: "/" , submenus:[
-          {
-            title: "PETA Sebaran",
-            icon: "mdi-map-legend",
-            route: "/backend/bts-peta-sebaran",
-            type: "item",
-          },
-          {
-            title: "Daftar Perusahaan",
-            icon: "mdi-office-building-outline",
-            route: "/backend/bts-daftar-perusahaan",
-            type: "item",
-          },
-          {
-            title: "Surviey",
-            icon: "mdi-map-marker-radius",
-            route: "",
-            type: "item",
-          },
-        ]},
-        { title: "UTILITAS", type: "subMenu", route: "/" , submenus:[
-          {
-            title: "Profil Pengguna",
-            icon: "accessibility",
-            route: "/backend/profil-akun",
-            type: "item",
-          },
-          {
-            title: "Ganti Kata Sandi",
-            icon: "vpn_key",
-            route: "/backend/chngpwd",
-            type: "item",
-          },
-
-        ]},
-
-      ];
-
-      return menus;
-    }
-
-    /**
-     * MENU OPD
-     */
-
-    if(authent == 'opd'){
-      menus = [
-        {
-          title: "Dashboard",
-          type: "item",
-          icon: "mdi-view-dashboard",
-          route: "/backend/dashboard",
-        },
-        { title: "BID. KESELAMATAN", type: "subheader", route: "/" },
-
-        {
-          title: "RENAKSI",
-          icon: "mdi-floor-plan",
-          route: "/backend/keselamatan-renaksi",
-          type: "item",
-        },
-
         { title: "Utility", type: "subheader", route: "/" },
         {
           title: "Profil Pengguna",
@@ -407,16 +257,11 @@ export default class AppsController {
           route: "/backend/chngpwd",
           type: "item",
         },
-
       ];
       return menus;
     }
 
-
-    /**
-     * Menu User
-     */
-     if(authent == 'user'){
+    if(authent == 'dokter'){
       menus = [
         {
           title: "Dashboard",
@@ -424,14 +269,6 @@ export default class AppsController {
           icon: "mdi-view-dashboard",
           route: "/backend/dashboard",
         },
-        {
-          title: "Lap Prl. Jalan dan Laka",
-          icon: "mdi-bullhorn",
-          route: "/backend/user-pelaporan",
-          type: "item",
-        },
-
-
         { title: "Utility", type: "subheader", route: "/" },
         {
           title: "Profil Pengguna",
@@ -445,12 +282,9 @@ export default class AppsController {
           route: "/backend/chngpwd",
           type: "item",
         },
-
-
       ];
       return menus;
     }
-
 
   }
 }
